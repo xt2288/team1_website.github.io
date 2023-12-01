@@ -1,0 +1,12 @@
+---
+title: "Shooting Incidents in NYC"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+Team 1 project web
+
+
+
