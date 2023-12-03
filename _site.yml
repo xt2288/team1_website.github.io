@@ -4,17 +4,16 @@ navbar:
   title: "Home"
   left:
     - text: "Data Source"
-      herf: 
+      href: 
     - text: "Visualization"
-      herf: 
+      href: 
     - text: "Statistical Analyses"
-      herf: 
+      href: 
     - text: "Project Report"
-      herf: 
-      
+      href: 
   right:
-    - text: "Abour Us"
-      herf: 
+    - text: "About Us"
+      href: about_us.html
     - icon: fa-envelope fa-lg
       menu:
         - text: Sixuan Chen
