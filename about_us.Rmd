@@ -7,28 +7,25 @@ output:
 
 ---
 
+Personal Github page is attached.
+
 ## Sixuan Chen
-[LinkedIn]()
 
 [GitHub](https://github.com/ChrissyCCC)
 
 ## Junyi Ren
-[LinkedIn]()
 
-[GitHuby]()
+[GitHub]()
 
 ## Yixiao Sun
-[LinkedIn]()
 
 [GitHub](https://github.com/elliotsyx)
 
 ## Xiaoting Tang
-[LinkedIn](https://www.linkedin.com/in/xiaoting-tang-2a20a7295/)
 
 [GitHub](https://github.com/xt2288)
 
 ## Yang Zhao
-[LinkedIn]()
 
 [GitHub]()
 
