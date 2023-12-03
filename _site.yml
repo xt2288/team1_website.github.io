@@ -6,15 +6,15 @@ navbar:
     - text: "Data Source"
       href: data_source.html
     - text: "Visualization"
-      href: 
+      href: visualization.html
     - text: "Statistical Analyses"
-      href: 
+      href: stat_analyses.html
     - text: "Prediction"
-      href: 
+      href: prediction.html
     - text: "Interactive Map"
-      href: 
+      href: interactive_map.html
     - text: "Project Report"
-      href: 
+      href: project_report.html
   right:
     - text: "About Us"
       href: about_us.html

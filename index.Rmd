@@ -22,11 +22,11 @@ output:
 # Website overview
 
 - [Data Source](data_source.html): A description of the data source
-- Visualization: Various plots with analysis
-- Statistical Analysis: Statistical tests used to solve proposed questions
-- Prediction: Time Series model to predict shooting cases
-- Interactive Map: A visual map shows the incidents in different boroughs across NYC
-- Project Report: The full project report is in the tab
+- [Visualization](visualization.html): Various plots with analysis
+- [Statistical Analysis](stat_analyses.html): Statistical tests used to solve proposed questions
+- [Prediction](prediction.html): Time Series model to predict shooting cases
+- [Interactive Map](interactive_map.html): A visual map shows the incidents in different boroughs across NYC
+- [Project Report](project_report.html): The full project report is in the tab
 - [About Us](about_us.html): More information about group members
 
 
