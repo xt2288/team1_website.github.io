@@ -6,7 +6,17 @@ output:
     toc_float: true
 
 ---
-Team 1 project web
+# Background
+
+# Motivation
+
+# Screencast
+
+# Website overview
+
+# Group Members
+
+
 
 
 
