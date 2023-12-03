@@ -10,7 +10,7 @@ output:
 ![](images/gun control.jpeg)
 
 # Background
-  The topic of shooting incidents worldwide raises concerns about the safety and security of various communities. A specific case involving an NYU student underscores the need for increased awareness and preventive measures within educational institutions. 
+  The topic of shooting incidents worldwide raises concerns about the safety and security of various communities. On the afternoon of Nov. 6, EST, NYU Alert, the alert system of New York University, issued an emergency alert that a shooting had occurred in the Tandon neighborhood, advising people to “run if you can run, hide if you can’t run, and duel if you can’t hide.” This specific case involving an NYU student underscores the need for increased awareness and preventive measures within educational institutions. 
 
 
 # Motivation
