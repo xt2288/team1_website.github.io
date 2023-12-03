@@ -1,0 +1,36 @@
+---
+title: "Visualization"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+
+---
+
+# Regarding time and victimization:
+
+# Regarding gender and victimization:
+
+# Regarding age and victimization:
+
+# Regarding region and victimization:
+
+# Mapping
+
+## Mapping New York City
+
+## Mapping New York City with NYPD Shooting Incident Data
+
+## Mapping Manhattan
+
+## Mapping Manhattan with NYPD Shooting Incident Data
+
+
+
+
+
+
+
+
+
