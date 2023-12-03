@@ -2,13 +2,38 @@ name: "Shooting Incidents in NYC"
 output_dir: "."
 navbar:
   title: "Home"
+  left:
+    - text: "Data Source"
+      herf: 
+    - text: "Visualization"
+      herf: 
+    - text: "Statistical Analyses"
+      herf: 
+    - text: "Project Report"
+      herf: 
+      
   right:
-    - text: "About Us"
+    - text: "Abour Us"
       herf: 
     - icon: fa-envelope fa-lg
-      href: mailto:<xt2288@cumc.columbia.edu>
+      menu:
+        - text: Sixuan Chen
+          href: mailto:<sc5352@cumc.columbia.edu>
+        - text: Junyi Ren
+          href: mailto:<jr4392@cumc.columbia.edu>
+        - text: Yixiao Sun
+          href: mailto:<ys3765@cumc.columbia.edu>
+        - text: Xiaoting Tang
+          href: mailto:<xt2288@cumc.columbia.edu>
+        - text: Yang Zhao
+          href: mailto:<yz4717@cumc.columbia.edu>
     - icon: fa-github fa-lg
-      href: https://github.com/xt2288/team1_website.github.io
+      menu: 
+        - text: Coding Repository 
+          href: https://github.com/elliotsyx/team1-final-project 
+        - text: Website Repository 
+          href: https://github.com/xt2288/team1_website.github.io
+          
 output:
   html_document:
     theme: cosmo
