@@ -4,10 +4,14 @@ navbar:
   title: "Home"
   left:
     - text: "Data Source"
-      href: 
+      href: data_source.html
     - text: "Visualization"
       href: 
     - text: "Statistical Analyses"
+      href: 
+    - text: "Prediction"
+      href: 
+    - text: "Interactive Map"
       href: 
     - text: "Project Report"
       href: 
