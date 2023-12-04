@@ -330,10 +330,18 @@ div.tocify {
 <li>
   <a href="visualization.html">Visualization</a>
 </li>
-<li class="dropdown-header">Statistical Analyses</li>
-<li class="dropdown-header">Prediction</li>
-<li class="dropdown-header">Interactive Map</li>
-<li class="dropdown-header">Project Report</li>
+<li>
+  <a href="stat_analyses.html">Statistical Analyses</a>
+</li>
+<li>
+  <a href="prediction.html">Prediction</a>
+</li>
+<li>
+  <a href="interactive_map.html">Interactive Map</a>
+</li>
+<li>
+  <a href="project_report.html">Project Report</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -404,31 +412,230 @@ div.tocify {
 
 <div id="regarding-time-and-victimization" class="section level1">
 <h1>Regarding time and victimization:</h1>
+<ul>
+<li>Presents an analysis of the distribution of NYPD shooting incidents
+across different time periods. The focus is on understanding when these
+incidents are more likely to occur during the day.</li>
+</ul>
+<pre class="r"><code>#incidents rate against the time
+incidents_time = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  mutate(hour = as.factor(hour)) |&gt;
+  group_by(hour) |&gt;
+  ggplot(aes(x = hour)) +
+  geom_bar() +
+  labs(x = &quot;Time(hour)&quot;, y = &quot;Incidents Numbers&quot;, title = &quot;Incidents Distribution of Time Periods&quot;)
+
+incidents_time</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<ul>
+<li>In this plot, each bar represents a specific hour, and the height of
+the bar corresponds to the number of shooting incidents during that
+hour. The x-axis represents the time (hour), and the y-axis represents
+the count of incidents.</li>
+<li>From this plot, we can find that the majority of shooting incidents
+occur during the night, with the highest concentration observed between
+21:00 and 23:00. Incidents are notably fewer during the daytime,
+reaching the lowest point from 7:00 to 9:00 PM. Incident numbers
+gradually increase throughout the day, reaching a peak during the
+late-night hours.</li>
+</ul>
 </div>
 <div id="regarding-gender-and-victimization" class="section level1">
 <h1>Regarding gender and victimization:</h1>
+<ul>
+<li>This plot delves into the gender distribution of shooting victims,
+seeking to understand the gender disparities among individuals impacted
+by shooting incidents.</li>
+</ul>
+<pre class="r"><code>#victim gender pie chart
+victim_gender = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(vic_sex) |&gt;
+  distinct(incident_key) |&gt;
+  summarise(count = n()) |&gt;
+  mutate(cumulative = cumsum(count),
+         label_position = cumulative - (0.5 * count)) |&gt;
+  ggplot(aes(x = &quot;&quot;, y = count, fill = vic_sex)) +
+  geom_bar(width = 1, stat = &quot;identity&quot;) +
+  coord_polar(&quot;y&quot;, start = 0) +
+  theme_void() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  labs(title = &quot;Victim Gender Distribution&quot;)
+
+victim_gender </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ul>
+<li>The plot reveals a substantial gender difference in victimization,
+with a significantly higher number of male victims compared to female
+victims. It effectively conveys the gender distribution, showcasing the
+magnitude of victimization for each gender category.</li>
+</ul>
 </div>
 <div id="regarding-age-and-victimization" class="section level1">
 <h1>Regarding age and victimization:</h1>
+<ul>
+<li>This plot investigates the age distribution of shooting victims,
+aiming to identify patterns and disparities across different age
+groups.</li>
+</ul>
+<pre class="r"><code>#victim age bar chart
+victim_age = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(vic_age_group) |&gt;
+  distinct(incident_key) |&gt;
+  summarise(count = n()) |&gt;
+  mutate(cumulative = cumsum(count),
+         label_position = cumulative - (0.5 * count)) |&gt;
+  ggplot(aes(x = &quot;&quot;, y = count, fill = vic_age_group)) +
+  geom_bar(width = 1, stat = &quot;identity&quot;) +
+  coord_polar(&quot;y&quot;, start = 0) +
+  theme_void() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+    labs(title = &quot;Age Distribution of Shooting Victims&quot;)
+
+victim_age</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<ul>
+<li>The plot highlights a significant disparity in victimization among
+various age groups.Victimization is notably concentrated among young
+people, with the age group between 25 and 44 experiencing the highest
+incidence of shooting incidents. There is an outlier at age 1022
+observed in the dataset, and it may represent an anomaly or data entry
+error.</li>
+</ul>
 </div>
 <div id="regarding-region-and-victimization" class="section level1">
 <h1>Regarding region and victimization:</h1>
+<ul>
+<li>This plot examines the trends in shooting incidents over the years,
+with a focus on different boroughs in New York City. The analysis
+employs a line chart to visually represent the number of incidents in
+each borough across multiple years.</li>
+</ul>
+<pre class="r"><code>#incidents vs. year, seperated by borough
+incidents_year = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(year, boro) |&gt;
+  summarise(count = n(), .groups = &quot;drop&quot;) |&gt;
+  ggplot(aes(x = year, y = count, group = boro, color = boro)) +
+  geom_line() +
+  facet_wrap(~boro) +
+  labs(
+    title = &quot;Incidents vs Year&quot;,
+    x = &quot;Year&quot;,
+    y = &quot;Incidents&quot;
+  )
+
+incidents_year</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>The number of incidents in Bronx and Brooklyn has been maintained at
+a high level every year. The overall situation of Manhattan and Queens
+remains relatively low and stable. But all four borough showed
+significant declines in 2018-2019, and bounced back in the following
+year. Compared with other boroughs, Staten Island have the fewer amount
+of the incidents. The density of data points in Staten Island is
+significantly lower than in other regions.</li>
+</ul>
 </div>
 <div id="mapping" class="section level1">
 <h1>Mapping</h1>
 <div id="mapping-new-york-city" class="section level2">
 <h2>Mapping New York City</h2>
+<ul>
+<li>To provide a more detailed and focused view of New York City,
+specific geographic limits were defined. The longitude and latitude
+boundaries were set as follows: Longitude: -74.3 to -73.7; Latitude:
+40.5 to 40.9. These limits were chosen to encompass the central area of
+New York City, ensuring that the map primarily highlights the city
+itself.</li>
+</ul>
+<pre class="r"><code># map
+new_york_map &lt;- map_data(&quot;state&quot;, region = &quot;new york&quot;)
+
+# Define limits to focus on New York City
+lon_min &lt;- -74.3
+lon_max &lt;- -73.7
+lat_min &lt;- 40.5
+lat_max &lt;- 40.9
+
+ggplot() +
+  geom_polygon(data = new_york_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of New York City&quot;)</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ul>
+<li>The maps generated are called “New York City Maps” and effectively
+show the outlines of geographic areas with light gray fills and white
+borders.</li>
+</ul>
 </div>
 <div id="mapping-new-york-city-with-nypd-shooting-incident-data"
 class="section level2">
 <h2>Mapping New York City with NYPD Shooting Incident Data</h2>
+<pre class="r"><code>ggplot() +
+  geom_polygon(data = new_york_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  geom_point(data = NYPD_Shooting_Incident_cleaned, aes(x = longitude, y = latitude), color = &quot;yellow&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of New York City with Data Points&quot;)</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<ul>
+<li>The map that resulted, entitled “Map of New York City with Data
+Points,” effective combines the geographic layout of the city with the
+specific locations of the shootings. The light gray background provides
+context for the map, while the yellow data points highlight the spatial
+distribution of shootings in New York City.</li>
+</ul>
 </div>
 <div id="mapping-manhattan" class="section level2">
 <h2>Mapping Manhattan</h2>
+<ul>
+<li>In order to provide a detailed and centralized view of Manhattan,
+the map defines specific geographic constraints. The longitude and
+latitude boundaries are set as follows: Longitude: -74.0479 to
+-73.79067; Latitude: 40.6829 to 40.8820. These boundaries cover all of
+Manhattan, ensuring that the map primarily highlights the borough
+itself.</li>
+</ul>
+<pre class="r"><code># map for Manhattan
+manhattan_map &lt;- map_data(&quot;state&quot;, region = &quot;new york&quot;)
+
+lon_min &lt;- -74.0479
+lon_max &lt;- -73.79067
+lat_min &lt;- 40.6829
+lat_max &lt;- 40.8820
+
+ggplot() +
+  geom_polygon(data = manhattan_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of Manhattan&quot;)</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li>Generates the “Manhattan Map” that effectively shows the outline of
+the geographic area with a light gray fill and white border.</li>
+</ul>
 </div>
 <div id="mapping-manhattan-with-nypd-shooting-incident-data"
 class="section level2">
 <h2>Mapping Manhattan with NYPD Shooting Incident Data</h2>
+<pre class="r"><code>manhattan = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  filter(boro == &quot;MANHATTAN&quot;)
+
+ggplot() +
+  geom_polygon(data = manhattan_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  geom_point(data = manhattan, aes(x = longitude, y = latitude), color = &quot;yellow&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of Manhattan with Incident Points&quot;)</code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>“Manhattan Map with Event Points” effectively combines the
+geographic layout of Manhattan with the specific locations of shooting
+incidents. A light gray background provides context for the map, while
+yellow data points highlight the spatial distribution of shootings
+within the borough.</li>
+</ul>
 </div>
 </div>
 
