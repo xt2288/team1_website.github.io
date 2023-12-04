@@ -13,7 +13,7 @@ library(tidyverse)
 
 # Data Source
 
-### Shooting Incident from 2006 to 2022 dataset
+### Shooting Incident from 2006 to 2022
 
   We choose the NYPD Shooting Incident Dataset as our main dataset in the study. This shooting incident dataset contains every shooting incident that occurred in NYC with years ranging from 2006 to 2022. Each record represents a shooting incident in NYC and includes information about the event, the location and time of occurrence. In addition, information related to suspect and victim demographics is also included.
 
@@ -24,14 +24,16 @@ NYPD_Shooting_Incident_2006_2022 =
   janitor::clean_names() 
 ```
 
-There are a total of 21 variables. Out of which, we consider the variables and description is listed below:
+There are a total of 21 variables. 
 
 * `INCIDENT_KEY`: Randomly generated persistent ID for each arrest.
 * `OCCUR_DATE`: Exact date of the shooting incident.
 * `OCCUR_TIME`: Exact time of the shooting incident.
 * `BORO`: Borough where the shooting incident occurred.
+* `LOC_OF_OCCUR_DESC` :Location of the shooting incident(OUTSIDE, INSIDE)
 * `PRECINCT`: Precinct where the shooting incident occurred.
 * `JURISDICTION_CODE`: Jurisdiction where the shooting incident occurred. Jurisdiction codes 0(Patrol), 1(Transit) and 2(Housing) represent NYPD whilst codes 3 and more represent non NYPD jurisdictions.
+* `LOC_CLASSFCTN_DESC`: Location of the shooting incident(STREET, HOUSING, COMMERCIAL, DWELLING, OTHER)
 * `PERP_AGE_GROUP`: Perpetrator’s age within a category.
 * `PERP_SEX`: Perpetrator’s sex description.
 * `PERP_RACE`: Perpetrator’s race description.
@@ -42,6 +44,7 @@ There are a total of 21 variables. Out of which, we consider the variables and d
 * `Y_COORD_CD`: Midblock Y-coordinate for New York State Plane Coordinate System, Long Island Zone, NAD 83, units feet (FIPS 3104).
 * `Latitude`: Latitude coordinate for Global Coordinate System, WGS 1984, decimal degrees (EPSG 4326).
 * `Longitude`: Longitude coordinate for Global Coordinate System, WGS 1984, decimal degrees (EPSG 4326).
+* `Lon_Lat`: Longitude and Latitude Coordinates for mapping.
 
 
 ### Shooting incident data for 2023
@@ -60,22 +63,22 @@ NYPD_Shooting_Incident_2023 =
 
 # Data Processing and Cleaning
 
-### Merge the two datasets
-* We used the `bind_rows` to bind these two dataste by row, making a longer result for the whole shooting incidents happened from 2006 to 2023.
+We bind these two datasets by row, making a longer result for the whole shooting incidents happened from 2006 to 2023. Separate the year, month and day in `occur_date` into three variables. Also, Separate the hours, minutes, and seconds in "occup_time" into three variables for subsequent statistical analysis. Remove variables that will not be used in subsequent statistical analysis of the data: `minute`, `second`, `loc_of_occur_desc`, `loc_classfctn_desc`, ` location_desc`.
 
-### Adjustment of data format
-* Separate the year, month and day in `occur_date` into three variables. Also, Separate the hours, minutes, and seconds in "occup_time" into three variables for subsequent statistical analysis.
-
-### Data cleansing
-* Remove variables that will not be used in subsequent statistical analysis of the data: `minute`, `second`, `loc_of_occur_desc`, `loc_classfctn_desc`, ` location_desc`.
-
-* The dataset is cleaned and merged in the following code.
 ```{r}
 NYPD_Shooting_Incident_cleaned = 
   bind_rows(NYPD_Shooting_Incident_2006_2022, NYPD_Shooting_Incident_2023) |>
   separate(occur_date, into = c("month", "day", "year"), sep = "/") |>
   separate(occur_time, into = c("hour", "minute", "second"), sep = ":") |>
   select(-minute, -second, -loc_of_occur_desc, -loc_classfctn_desc, -location_desc)
+```
+
+First five rows of the cleaned dataset are shown below.
+
+```{r}
+NYPD_Shooting_Incident_cleaned |>
+  head(5) |>
+  knitr::kable()
 ```
 
 

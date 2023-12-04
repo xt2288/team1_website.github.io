@@ -327,11 +327,21 @@ div.tocify {
         <li>
   <a href="data_source.html">Data Source</a>
 </li>
-<li class="dropdown-header">Visualization</li>
-<li class="dropdown-header">Statistical Analyses</li>
-<li class="dropdown-header">Prediction</li>
-<li class="dropdown-header">Interactive Map</li>
-<li class="dropdown-header">Project Report</li>
+<li>
+  <a href="visualization.html">Visualization</a>
+</li>
+<li>
+  <a href="stat_analyses.html">Statistical Analyses</a>
+</li>
+<li>
+  <a href="prediction.html">Prediction</a>
+</li>
+<li>
+  <a href="interactive_map.html">Interactive Map</a>
+</li>
+<li>
+  <a href="project_report.html">Project Report</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -401,9 +411,8 @@ div.tocify {
 
 <div id="data-source" class="section level1">
 <h1>Data Source</h1>
-<div id="shooting-incident-from-2006-to-2022-dataset"
-class="section level3">
-<h3>Shooting Incident from 2006 to 2022 dataset</h3>
+<div id="shooting-incident-from-2006-to-2022" class="section level3">
+<h3>Shooting Incident from 2006 to 2022</h3>
 <p>We choose the NYPD Shooting Incident Dataset as our main dataset in
 the study. This shooting incident dataset contains every shooting
 incident that occurred in NYC with years ranging from 2006 to 2022. Each
@@ -415,8 +424,7 @@ included.</p>
 NYPD_Shooting_Incident_2006_2022 = 
   read_csv(&quot;data/NYPD_Shooting_Incident_Data__Historic__20231120.csv&quot;) |&gt;
   janitor::clean_names() </code></pre>
-<p>There are a total of 21 variables. Out of which, we consider the
-variables and description is listed below:</p>
+<p>There are a total of 21 variables.</p>
 <ul>
 <li><code>INCIDENT_KEY</code>: Randomly generated persistent ID for each
 arrest.</li>
@@ -424,12 +432,16 @@ arrest.</li>
 <li><code>OCCUR_TIME</code>: Exact time of the shooting incident.</li>
 <li><code>BORO</code>: Borough where the shooting incident
 occurred.</li>
+<li><code>LOC_OF_OCCUR_DESC</code> :Location of the shooting
+incident(OUTSIDE, INSIDE)</li>
 <li><code>PRECINCT</code>: Precinct where the shooting incident
 occurred.</li>
 <li><code>JURISDICTION_CODE</code>: Jurisdiction where the shooting
 incident occurred. Jurisdiction codes 0(Patrol), 1(Transit) and
 2(Housing) represent NYPD whilst codes 3 and more represent non NYPD
 jurisdictions.</li>
+<li><code>LOC_CLASSFCTN_DESC</code>: Location of the shooting
+incident(STREET, HOUSING, COMMERCIAL, DWELLING, OTHER)</li>
 <li><code>PERP_AGE_GROUP</code>: Perpetrator’s age within a
 category.</li>
 <li><code>PERP_SEX</code>: Perpetrator’s sex description.</li>
@@ -447,6 +459,8 @@ Plane Coordinate System, Long Island Zone, NAD 83, units feet (FIPS
 System, WGS 1984, decimal degrees (EPSG 4326).</li>
 <li><code>Longitude</code>: Longitude coordinate for Global Coordinate
 System, WGS 1984, decimal degrees (EPSG 4326).</li>
+<li><code>Lon_Lat</code>: Longitude and Latitude Coordinates for
+mapping.</li>
 </ul>
 </div>
 <div id="shooting-incident-data-for-2023" class="section level3">
@@ -469,38 +483,184 @@ description we considered are same as the given list above.</p>
 </div>
 <div id="data-processing-and-cleaning" class="section level1">
 <h1>Data Processing and Cleaning</h1>
-<div id="merge-the-two-datasets" class="section level3">
-<h3>Merge the two datasets</h3>
-<ul>
-<li>We used the <code>bind_rows</code> to bind these two dataste by row,
-making a longer result for the whole shooting incidents happened from
-2006 to 2023.</li>
-</ul>
-</div>
-<div id="adjustment-of-data-format" class="section level3">
-<h3>Adjustment of data format</h3>
-<ul>
-<li>Separate the year, month and day in <code>occur_date</code> into
-three variables. Also, Separate the hours, minutes, and seconds in
-“occup_time” into three variables for subsequent statistical
-analysis.</li>
-</ul>
-</div>
-<div id="data-cleansing" class="section level3">
-<h3>Data cleansing</h3>
-<ul>
-<li><p>Remove variables that will not be used in subsequent statistical
-analysis of the data: <code>minute</code>, <code>second</code>,
+<p>We bind these two datasets by row, making a longer result for the
+whole shooting incidents happened from 2006 to 2023. Separate the year,
+month and day in <code>occur_date</code> into three variables. Also,
+Separate the hours, minutes, and seconds in “occup_time” into three
+variables for subsequent statistical analysis. Remove variables that
+will not be used in subsequent statistical analysis of the data:
+<code>minute</code>, <code>second</code>,
 <code>loc_of_occur_desc</code>, <code>loc_classfctn_desc</code>,
-<code>location_desc</code>.</p></li>
-<li><p>The dataset is cleaned and merged in the following code.</p></li>
-</ul>
+<code>location_desc</code>.</p>
 <pre class="r"><code>NYPD_Shooting_Incident_cleaned = 
   bind_rows(NYPD_Shooting_Incident_2006_2022, NYPD_Shooting_Incident_2023) |&gt;
   separate(occur_date, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;), sep = &quot;/&quot;) |&gt;
   separate(occur_time, into = c(&quot;hour&quot;, &quot;minute&quot;, &quot;second&quot;), sep = &quot;:&quot;) |&gt;
   select(-minute, -second, -loc_of_occur_desc, -loc_classfctn_desc, -location_desc)</code></pre>
-</div>
+<p>First five rows of the cleaned dataset are shown below.</p>
+<pre class="r"><code>NYPD_Shooting_Incident_cleaned |&gt;
+  head(5) |&gt;
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="5%" />
+<col width="2%" />
+<col width="1%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="3%" />
+<col width="7%" />
+<col width="9%" />
+<col width="6%" />
+<col width="3%" />
+<col width="4%" />
+<col width="5%" />
+<col width="3%" />
+<col width="6%" />
+<col width="4%" />
+<col width="4%" />
+<col width="3%" />
+<col width="4%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">incident_key</th>
+<th align="left">month</th>
+<th align="left">day</th>
+<th align="left">year</th>
+<th align="left">hour</th>
+<th align="left">boro</th>
+<th align="right">precinct</th>
+<th align="right">jurisdiction_code</th>
+<th align="left">statistical_murder_flag</th>
+<th align="left">perp_age_group</th>
+<th align="left">perp_sex</th>
+<th align="left">perp_race</th>
+<th align="left">vic_age_group</th>
+<th align="left">vic_sex</th>
+<th align="left">vic_race</th>
+<th align="right">x_coord_cd</th>
+<th align="right">y_coord_cd</th>
+<th align="right">latitude</th>
+<th align="right">longitude</th>
+<th align="left">lon_lat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">228798151</td>
+<td align="left">05</td>
+<td align="left">27</td>
+<td align="left">2021</td>
+<td align="left">21</td>
+<td align="left">QUEENS</td>
+<td align="right">105</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">18-24</td>
+<td align="left">M</td>
+<td align="left">BLACK</td>
+<td align="right">1058925</td>
+<td align="right">180924.0</td>
+<td align="right">40.66296</td>
+<td align="right">-73.73084</td>
+<td align="left">POINT (-73.73083868899994 40.662964620000025)</td>
+</tr>
+<tr class="even">
+<td align="right">137471050</td>
+<td align="left">06</td>
+<td align="left">27</td>
+<td align="left">2014</td>
+<td align="left">17</td>
+<td align="left">BRONX</td>
+<td align="right">40</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">18-24</td>
+<td align="left">M</td>
+<td align="left">BLACK</td>
+<td align="right">1005028</td>
+<td align="right">234516.0</td>
+<td align="right">40.81035</td>
+<td align="right">-73.92494</td>
+<td align="left">POINT (-73.92494232599995 40.81035186300006)</td>
+</tr>
+<tr class="odd">
+<td align="right">147998800</td>
+<td align="left">11</td>
+<td align="left">21</td>
+<td align="left">2015</td>
+<td align="left">03</td>
+<td align="left">QUEENS</td>
+<td align="right">108</td>
+<td align="right">0</td>
+<td align="left">TRUE</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">25-44</td>
+<td align="left">M</td>
+<td align="left">WHITE</td>
+<td align="right">1007668</td>
+<td align="right">209836.5</td>
+<td align="right">40.74261</td>
+<td align="right">-73.91549</td>
+<td align="left">POINT (-73.91549174199997 40.74260663300004)</td>
+</tr>
+<tr class="even">
+<td align="right">146837977</td>
+<td align="left">10</td>
+<td align="left">09</td>
+<td align="left">2015</td>
+<td align="left">18</td>
+<td align="left">BRONX</td>
+<td align="right">44</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">&lt;18</td>
+<td align="left">M</td>
+<td align="left">WHITE HISPANIC</td>
+<td align="right">1006537</td>
+<td align="right">244511.1</td>
+<td align="right">40.83778</td>
+<td align="right">-73.91946</td>
+<td align="left">POINT (-73.91945661499994 40.83778200300003)</td>
+</tr>
+<tr class="odd">
+<td align="right">58921844</td>
+<td align="left">02</td>
+<td align="left">19</td>
+<td align="left">2009</td>
+<td align="left">22</td>
+<td align="left">BRONX</td>
+<td align="right">47</td>
+<td align="right">0</td>
+<td align="left">TRUE</td>
+<td align="left">25-44</td>
+<td align="left">M</td>
+<td align="left">BLACK</td>
+<td align="left">45-64</td>
+<td align="left">M</td>
+<td align="left">BLACK</td>
+<td align="right">1024922</td>
+<td align="right">262189.4</td>
+<td align="right">40.88624</td>
+<td align="right">-73.85291</td>
+<td align="left">POINT (-73.85290950899997 40.88623791800006)</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
