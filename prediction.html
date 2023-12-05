@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Prediction - Time Series Model</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="data_source.html">Data Source</a>
+</li>
+<li>
+  <a href="visualization.html">Visualization</a>
+</li>
+<li>
+  <a href="stat_analyses.html">Statistical Analyses</a>
+</li>
+<li>
+  <a href="prediction.html">Prediction</a>
+</li>
+<li>
+  <a href="interactive_map.html">Interactive Map</a>
+</li>
+<li>
+  <a href="project_report.html">Project Report</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about_us.html">About Us</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:&lt;sc5352@cumc.columbia.edu&gt;">Sixuan Chen</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jr4392@cumc.columbia.edu&gt;">Junyi Ren</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;ys3765@cumc.columbia.edu&gt;">Yixiao Sun</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;xt2288@cumc.columbia.edu&gt;">Xiaoting Tang</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;yz4717@cumc.columbia.edu&gt;">Yang Zhao</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-github fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/elliotsyx/team1-final-project">Coding Repository</a>
+    </li>
+    <li>
+      <a href="https://github.com/xt2288/team1_website.github.io">Website Repository</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Prediction - Time Series Model</h1>
+
+</div>
+
+
+<p>First, we import the cleaned data into the environment, and grouped
+the data by year and month. After that, we count the case number of each
+month and would like to find out that is there any serial
+autocorrelation. To predict the future data, we still need to conduct
+some test about the original data.</p>
+<div id="slice-the-data" class="section level1">
+<h1>Slice the data</h1>
+<pre class="r"><code>cases_ts =
+  every_month |&gt; 
+  pull(cases_number)|&gt; 
+  ts(start = c(2006,1), frequency = 12)
+
+plot(cases_ts,
+     main = &quot;Shooting cases per month&quot;,
+     ylab = &quot;Frequency&quot;)</code></pre>
+<p><img src="prediction_files/figure-html/split_tseries-1.png" width="672" /></p>
+<pre class="r"><code>## test model
+test_series = cases_ts |&gt; tail(72)
+
+test_series = ts(test_series,start = c(2017,1), frequency = 12)</code></pre>
+<p>After that, we draw the plot of the original data. It is clear that
+we can’t recognize any upward or downward trend in the time series from
+the graphs. In order to make the model focused more on recent data
+points, we decided to reduce the training data. Hence the model would
+give more weight on the recent data rather than other distant data.</p>
+</div>
+<div id="conducting-the-test" class="section level1">
+<h1>Conducting the test</h1>
+<div id="box-test" class="section level2">
+<h2>Box Test</h2>
+<p><span class="math inline">\(H_{0}\)</span>: The data are
+independently distributed (i.e. the correlations in the population from
+which the sample is taken are 0, so that any observed correlations in
+the data result from randomness of the sampling process).</p>
+<p><span class="math inline">\(H_{1}\)</span>: The data are not
+independently distributed; they exhibit serial correlation.</p>
+<pre class="r"><code>Box.test(test_series,type = &quot;Ljung&quot;,lag = 6)</code></pre>
+<pre><code>## 
+##  Box-Ljung test
+## 
+## data:  test_series
+## X-squared = 89.161, df = 6, p-value &lt; 2.2e-16</code></pre>
+<p>Then, we need to reject the NULL hypothesis and concluded that the
+exhibit serial correlation, in other words, this series is not a white
+noise series and it includes some information which we need.</p>
+<p>After that, we need to conduct Augmented Dickey-Fuller Test to to
+examine whether the series is a stationary time series or not. If the
+series is not stationary then the series is to be stabilized by
+difference.</p>
+</div>
+<div id="augmented-dickey-fuller-test" class="section level2">
+<h2>Augmented Dickey-Fuller Test</h2>
+<p><span class="math inline">\(H_0\)</span>:The time series has a unit
+root, implying that it is non-stationary.</p>
+<p><span class="math inline">\(H_1\)</span>:The time series does not
+have a unit root, implying that it is stationary.</p>
+<pre class="r"><code>aTSA::adf.test(test_series)</code></pre>
+<pre><code>## Augmented Dickey-Fuller Test 
+## alternative: stationary 
+##  
+## Type 1: no drift no trend 
+##      lag    ADF p.value
+## [1,]   0 -1.040   0.304
+## [2,]   1 -1.220   0.240
+## [3,]   2 -1.232   0.235
+## [4,]   3 -0.926   0.345
+## Type 2: with drift no trend 
+##      lag   ADF p.value
+## [1,]   0 -2.56  0.1129
+## [2,]   1 -3.39  0.0170
+## [3,]   2 -3.49  0.0125
+## [4,]   3 -2.77  0.0729
+## Type 3: with drift and trend 
+##      lag   ADF p.value
+## [1,]   0 -2.64  0.3099
+## [2,]   1 -3.52  0.0462
+## [3,]   2 -3.75  0.0268
+## [4,]   3 -2.98  0.1736
+## ---- 
+## Note: in fact, p.value = 0.01 means p.value &lt;= 0.01</code></pre>
+<p>From the above test result, we can clear in the model of no drift and
+no trend, all the p-value is greater than the given alpha (<span
+class="math inline">\(\alpha=0.05\)</span>), as a result, we have strong
+evidence to prove that this series does not have a unit root and
+concluded that it’s a stationary series.</p>
+<pre class="r"><code>acf(cases_ts, lag.max = 20)</code></pre>
+<p><img src="prediction_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>pacf(cases_ts)</code></pre>
+<p><img src="prediction_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>decomposed = 
+  decompose(cases_ts,
+            type = &quot;additive&quot;) 
+
+plot(decomposed)</code></pre>
+<p><img src="prediction_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<p>As the normal time-series prediction procedure requested, we also
+made the plot of autocorrelation function(ACF) and partial
+autocorrelation function(PACF) to help us know more about this series.
+What’s more, we decided to decomposed the series by additive method
+according to the existing feature to this series.</p>
+</div>
+</div>
+<div id="grid-research-via-for-loop" class="section level1">
+<h1>Grid Research via For Loop</h1>
+<p>After that, all of us prefer to use the Holtwinter to forecast the
+series which is a way to model three aspects of the time series: a
+typical value (average), a slope (trend) over time, and a cyclical
+repeating pattern (seasonality).</p>
+<p>As a result, we need to find out the best parameter for this model.
+Then, we wrote a function about building a model with different
+parameters and tried to evaluate the model validity by calculating the
+root of the mean of the squared errors between the predicted and
+observed/actual values.</p>
+<pre class="r"><code>holtwinters_rmse = function(alpha, beta, gamma, df) {
+    fit = HoltWinters(df, alpha = alpha, beta = beta, gamma = gamma)
+    forecast_values = forecast::forecast(fit, h = length(df))
+    
+    actual_values = as.numeric(df)  
+    forecasted_values = as.numeric(forecast_values$mean)
+    
+    rmse = sqrt(mean((actual_values - forecasted_values)^2, na.rm = TRUE))
+    return(rmse)
+}</code></pre>
+<div id="special-optimization-about-the-loop" class="section level2">
+<h2>Special Optimization About the Loop</h2>
+<p>To make it easier, we use the <code>expand.grid</code> to list all
+the possible combinations in a data frame to reduce the loop layers. In
+this way, we can significantly improve the efficiency of this simulation
+process.</p>
+<pre class="r"><code># Grid search for alpha, beta, and gamma with a step size of 0.1
+beta_range = gamma_range = seq(0, 1, 0.1)
+alpha_range = seq(.1,1,.1)
+param_combin = expand.grid(alpha = alpha_range, beta = beta_range, gamma = gamma_range)
+
+best_params = NULL
+best_rmse = Inf
+
+for (i in 1:nrow(param_combin)) {
+  
+  params = param_combin[i, ]
+  rmse = holtwinters_rmse(params$alpha, params$beta, params$gamma, test_series)
+  
+  if (rmse &lt; best_rmse) {
+    best_rmse = rmse
+    best_params = params
+  }
+  
+}
+
+# Assuming best_params and best_rmse are your results
+print(sprintf(&quot;The best parameters of Holtwinters - Alpha: %.2f, Beta: %.2f, Gamma: %.2f&quot;,
+              best_params$alpha, 
+              best_params$beta, 
+              best_params$gamma))</code></pre>
+<pre><code>## [1] &quot;The best parameters of Holtwinters - Alpha: 0.30, Beta: 0.50, Gamma: 0.10&quot;</code></pre>
+<pre class="r"><code>print(sprintf(&quot;Best RMSE: %.4f&quot;,
+              best_rmse))</code></pre>
+<pre><code>## [1] &quot;Best RMSE: 46.2393&quot;</code></pre>
+</div>
+</div>
+<div id="using-the-best-holtwinter-model-to-predict"
+class="section level1">
+<h1>Using the Best Holtwinter Model to Predict</h1>
+<p>Using the best parameter, we can make the prediction and plot the
+result.</p>
+<pre class="r"><code>HW_best =  
+  HoltWinters(test_series,
+              alpha = pull(best_params , alpha),
+              beta = pull(best_params , beta),
+              gamma = pull(best_params , gamma))
+
+HW_fitted = as.data.frame(fitted(HW_best))
+
+HW_best_forward = 
+  forecast(HW_best, h = 12) |&gt; 
+  janitor::clean_names()
+
+plot(x= test_series,
+     ylab = &quot;Case Number of each month&quot;,
+     xlim = c(2017,2024),
+     ylim = range(0,HW_best_forward$upper[,2]))+
+  lines(HW_best$fitted[,1], col = &quot;blue&quot;, lty = 2)+
+  lines(HW_best_forward$mean,lty=2, col = &quot;red&quot;)+
+  lines(HW_best_forward$upper[,2],col = &quot;orange&quot;)</code></pre>
+<p><img src="prediction_files/figure-html/best_version_prediction-1.png" width="672" /></p>
+<pre><code>## integer(0)</code></pre>
+<pre class="r"><code>HW_best_forward |&gt; 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Point Forecast</th>
+<th align="right">Lo 80</th>
+<th align="right">Hi 80</th>
+<th align="right">Lo 95</th>
+<th align="right">Hi 95</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Jan 2023</td>
+<td align="right">77.83379</td>
+<td align="right">10.473172</td>
+<td align="right">145.1944</td>
+<td align="right">-25.18539</td>
+<td align="right">180.8530</td>
+</tr>
+<tr class="even">
+<td align="left">Feb 2023</td>
+<td align="right">71.27066</td>
+<td align="right">-2.596028</td>
+<td align="right">145.1373</td>
+<td align="right">-41.69869</td>
+<td align="right">184.2400</td>
+</tr>
+<tr class="odd">
+<td align="left">Mar 2023</td>
+<td align="right">79.22251</td>
+<td align="right">-4.978262</td>
+<td align="right">163.4233</td>
+<td align="right">-49.55146</td>
+<td align="right">207.9965</td>
+</tr>
+<tr class="even">
+<td align="left">Apr 2023</td>
+<td align="right">71.89397</td>
+<td align="right">-26.300163</td>
+<td align="right">170.0881</td>
+<td align="right">-78.28100</td>
+<td align="right">222.0689</td>
+</tr>
+<tr class="odd">
+<td align="left">May 2023</td>
+<td align="right">71.15639</td>
+<td align="right">-44.244751</td>
+<td align="right">186.5575</td>
+<td align="right">-105.33443</td>
+<td align="right">247.6472</td>
+</tr>
+<tr class="even">
+<td align="left">Jun 2023</td>
+<td align="right">87.75317</td>
+<td align="right">-47.598100</td>
+<td align="right">223.1044</td>
+<td align="right">-119.24873</td>
+<td align="right">294.7551</td>
+</tr>
+<tr class="odd">
+<td align="left">Jul 2023</td>
+<td align="right">94.19186</td>
+<td align="right">-63.459334</td>
+<td align="right">251.8430</td>
+<td align="right">-146.91483</td>
+<td align="right">335.2985</td>
+</tr>
+<tr class="even">
+<td align="left">Aug 2023</td>
+<td align="right">125.51432</td>
+<td align="right">-56.484042</td>
+<td align="right">307.5127</td>
+<td align="right">-152.82816</td>
+<td align="right">403.8568</td>
+</tr>
+<tr class="odd">
+<td align="left">Sep 2023</td>
+<td align="right">127.23627</td>
+<td align="right">-80.928746</td>
+<td align="right">335.4013</td>
+<td align="right">-191.12465</td>
+<td align="right">445.5972</td>
+</tr>
+<tr class="even">
+<td align="left">Oct 2023</td>
+<td align="right">149.02174</td>
+<td align="right">-86.956840</td>
+<td align="right">385.0003</td>
+<td align="right">-211.87635</td>
+<td align="right">509.9198</td>
+</tr>
+<tr class="odd">
+<td align="left">Nov 2023</td>
+<td align="right">119.85390</td>
+<td align="right">-145.452033</td>
+<td align="right">385.1598</td>
+<td align="right">-285.89651</td>
+<td align="right">525.6043</td>
+</tr>
+<tr class="even">
+<td align="left">Dec 2023</td>
+<td align="right">97.43684</td>
+<td align="right">-198.605217</td>
+<td align="right">393.4789</td>
+<td align="right">-355.32042</td>
+<td align="right">550.1941</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="comment" class="section level1">
+<h1>Comment</h1>
+<p>As you can see from the above the graph, the original series is in
+the color of black. Then, the blue line is the fitted value by
+Holtwinter modeling. After that, the red line is the predicted value and
+the orange one is the the 95% upper limit of the prediction.</p>
+<p>According to the shape of this prediction, we can clearly know that
+the case number will rise from the start of the 2023 and peaks at the
+middle of the year. In such circumstance, we suggest that the police
+station should minimize the likelihood of shootings in the precinct by
+increasing the number of patrols and the number of patrols
+conducted.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
