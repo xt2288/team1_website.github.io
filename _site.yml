@@ -12,7 +12,7 @@ navbar:
     - text: "Prediction"
       href: prediction.html
     - text: "Interactive Map"
-      href: interactive_map.html
+      href: https://31s4qg-yixiao-sun.shinyapps.io/shiny/
     - text: "Project Report"
       href: project_report.html
   right:

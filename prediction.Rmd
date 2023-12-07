@@ -198,9 +198,7 @@ HW_best_forward |>
 
 As you can see from the above the graph, the original series is in the color of black. Then, the blue line is the fitted value by Holtwinter modeling. After that, the red line is the predicted value and the orange one is the the 95% upper limit of the prediction.
 
-According to the shape of this prediction, we can clearly know that the case number will rise from the start of the 2023 and peaks at the middle of the year. In such circumstance, we suggest that the police station should minimize the likelihood of shootings in the precinct by increasing the number of patrols and the number of patrols conducted.
-
-
+According to the shape of this prediction, we can clearly know that the case number will drop after September 2023 and peaks at the middle of next year as always. In such circumstance, we suggest that the police station should minimize the likelihood of shootings in the precinct by increasing the number of patrols and the number of patrols conducted.
 
 
 
