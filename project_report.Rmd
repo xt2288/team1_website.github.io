@@ -29,6 +29,10 @@ Shootings in schools are not an isolated problem. It affects the entire school c
 
 Overall, the motivation to address these interconnected issues lies in the shared goal of creating safer, more vibrant communities and environments for individuals to thrive.
 
+# Related Work
+
+The NYU case: https://nyunews.com/news/2023/11/06/shots-fired-nyu-tandon/
+
 # Initial Questions 
 1. Are shootings affected by seasonal differences?
 2. Do male victimization rates vary by region?

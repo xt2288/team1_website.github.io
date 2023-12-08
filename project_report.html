@@ -440,6 +440,12 @@ contribute to violence.</p>
 in the shared goal of creating safer, more vibrant communities and
 environments for individuals to thrive.</p>
 </div>
+<div id="related-work" class="section level1">
+<h1>Related Work</h1>
+<p>The NYU case: <a
+href="https://nyunews.com/news/2023/11/06/shots-fired-nyu-tandon/"
+class="uri">https://nyunews.com/news/2023/11/06/shots-fired-nyu-tandon/</a></p>
+</div>
 <div id="initial-questions" class="section level1">
 <h1>Initial Questions</h1>
 <ol style="list-style-type: decimal">
@@ -972,8 +978,8 @@ some test about the original data.</p>
   NYPD_Shooting_Incident_cleaned |&gt; 
   group_by(year,month) |&gt; 
   summarize(cases_number = n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups`
-## argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <p>After that, we draw the plot of the original data. It is clear that
 we can’t recognize any upward or downward trend in the time series from
 the graphs. In order to make the model focused more on recent data
