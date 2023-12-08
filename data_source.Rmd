@@ -13,7 +13,7 @@ library(tidyverse)
 
 # Data Source
 
-### Shooting Incident from 2006 to 2022
+### [Shooting Incident from 2006 to 2022](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8)
 
   We choose the NYPD Shooting Incident Dataset as our main dataset in the study. This shooting incident dataset contains every shooting incident that occurred in NYC with years ranging from 2006 to 2022. Each record represents a shooting incident in NYC and includes information about the event, the location and time of occurrence. In addition, information related to suspect and victim demographics is also included.
 
@@ -47,7 +47,7 @@ There are a total of 21 variables.
 * `Lon_Lat`: Longitude and Latitude Coordinates for mapping.
 
 
-### Shooting incident data for 2023
+### [Shooting incident data for 2023](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8)
 
   This dataset lists of every shooting incident that occurred in NYC during the current calendar year. As a supplement to the primary dataset, this dataset added 2023 shooting incidents up to September. Each record represents a shooting incident in NYC and includes information about the event, the location and time of occurrence. In addition, information related to suspect and victim demographics is also included.
 
