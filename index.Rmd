@@ -4,6 +4,7 @@ output:
   html_document:
     toc: true
     toc_float: true
+    code_folding: hide
 
 ---
 
@@ -18,6 +19,10 @@ output:
   
   
 # Screencast
+
+```{r}
+vembedr::embed_url("https://youtu.be/cN3OYNHOvFc")
+```
 
 # Website overview
 
