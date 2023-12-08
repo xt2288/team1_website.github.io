@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Project Report</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="data_source.html">Data Source</a>
+</li>
+<li>
+  <a href="visualization.html">Visualization</a>
+</li>
+<li>
+  <a href="stat_analyses.html">Statistical Analyses</a>
+</li>
+<li>
+  <a href="prediction.html">Prediction</a>
+</li>
+<li>
+  <a href="https://31s4qg-yixiao-sun.shinyapps.io/shiny/">Interactive Map</a>
+</li>
+<li>
+  <a href="project_report.html">Project Report</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about_us.html">About Us</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:&lt;sc5352@cumc.columbia.edu&gt;">Sixuan Chen</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jr4392@cumc.columbia.edu&gt;">Junyi Ren</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;ys3765@cumc.columbia.edu&gt;">Yixiao Sun</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;xt2288@cumc.columbia.edu&gt;">Xiaoting Tang</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;yz4717@cumc.columbia.edu&gt;">Yang Zhao</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-github fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/elliotsyx/team1-final-project">Coding Repository</a>
+    </li>
+    <li>
+      <a href="https://github.com/xt2288/team1_website.github.io">Website Repository</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Project Report</h1>
+
+</div>
+
+
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p>The topic of shooting incidents worldwide raises concerns about the
+safety and security of various communities. On the afternoon of Nov. 6,
+2023, the alert system of New York University, issued an emergency alert
+that a shooting had occurred in the Tandon neighborhood, advising people
+to “run if you can run, hide if you can’t run, and duel if you can’t
+hide.” This specific case involving an NYU student underscores the need
+for increased awareness and preventive measures within educational
+institutions. Many schools are tasked with ensuring the safety of their
+students, making it essential to address and mitigate potential
+threats.</p>
+<p>Shootings in schools are not an isolated problem. It affects the
+entire school community, and its impact extends beyond the individual
+case of New York University to include educational institutions and
+industries throughout the New York area. Beyond the school gates,
+shootings cast a shadow over the workplace, impacting employee safety
+and productivity. Shootings instill fear in employees and negatively
+impact the overall workplace culture. Addressing the root of the problem
+is critical to maintaining a thriving workforce. Other public spaces and
+cultural venues are an important part of New York and are not immune to
+the threat of gun violence. Concert halls, theaters, and recreational
+areas have all become potential targets. Protecting these spaces
+requires a collective commitment to implementing safety measures,
+promoting community engagement, and addressing the social factors that
+contribute to violence.</p>
+<p>Overall, the motivation to address these interconnected issues lies
+in the shared goal of creating safer, more vibrant communities and
+environments for individuals to thrive.</p>
+</div>
+<div id="initial-questions" class="section level1">
+<h1>Initial Questions</h1>
+<ol style="list-style-type: decimal">
+<li>Are shootings affected by seasonal differences?</li>
+<li>Do male victimization rates vary by region?</li>
+<li>What will be the trend in the future of shooting incident?</li>
+</ol>
+</div>
+<div id="data-sources" class="section level1">
+<h1>Data sources</h1>
+<div id="shooting-incident-from-2006-to-2022-dataset"
+class="section level2">
+<h2>Shooting Incident from 2006 to 2022 dataset</h2>
+<p>We choose the NYPD Shooting Incident Dataset as our main dataset in
+our study. This shooting incident datasets contain every shooting
+incident that occurred in NYC with years ranging from 2006 to 2022. Each
+record represents a shooting incident in NYC and includes information
+about the event, the location and time of occurrence. In addition,
+information related to suspect and victim demographics is also
+included.</p>
+<pre class="r"><code># Read shooting Incident from 2006 to 2022
+NYPD_Shooting_Incident_2006_2022 = 
+  read_csv(&quot;data/NYPD_Shooting_Incident_Data__Historic__20231120.csv&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  select(-lon_lat,
+         -statistical_murder_flag)</code></pre>
+<p>There are a total of 21 variables.</p>
+<ul>
+<li><code>INCIDENT_KEY</code>: Randomly generated persistent ID for each
+arrest.</li>
+<li><code>OCCUR_DATE</code>: Exact date of the shooting incident.</li>
+<li><code>OCCUR_TIME</code>: Exact time of the shooting incident.</li>
+<li><code>BORO</code>: Borough where the shooting incident
+occurred.</li>
+<li><code>LOC_OF_OCCUR_DESC</code> :Location of the shooting
+incident(OUTSIDE, INSIDE)</li>
+<li><code>PRECINCT</code>: Precinct where the shooting incident
+occurred.</li>
+<li><code>JURISDICTION_CODE</code>: Jurisdiction where the shooting
+incident occurred. Jurisdiction codes 0(Patrol), 1(Transit) and
+2(Housing) represent NYPD whilst codes 3 and more represent non NYPD
+jurisdictions.</li>
+<li><code>LOC_CLASSFCTN_DESC</code>: Location of the shooting
+incident(STREET, HOUSING, COMMERCIAL, DWELLING, OTHER)</li>
+<li><code>PERP_AGE_GROUP</code>: Perpetrator’s age within a
+category.</li>
+<li><code>PERP_SEX</code>: Perpetrator’s sex description.</li>
+<li><code>PERP_RACE</code>: Perpetrator’s race description.</li>
+<li><code>VIC_AGE_GROUP</code>: Victim’s age within a category.</li>
+<li><code>VIC_SEX</code>: Victim’s sex description.</li>
+<li><code>VIC_RACE</code>: Victim’s race description.</li>
+<li><code>X_COORD_CD</code>: Midblock X-coordinate for New York State
+Plane Coordinate System, Long Island Zone, NAD 83, units feet (FIPS
+3104).</li>
+<li><code>Y_COORD_CD</code>: Midblock Y-coordinate for New York State
+Plane Coordinate System, Long Island Zone, NAD 83, units feet (FIPS
+3104).</li>
+<li><code>Latitude</code>: Latitude coordinate for Global Coordinate
+System, WGS 1984, decimal degrees (EPSG 4326).</li>
+<li><code>Longitude</code>: Longitude coordinate for Global Coordinate
+System, WGS 1984, decimal degrees (EPSG 4326).</li>
+<li><code>Lon_Lat</code>: Longitude and Latitude Coordinates for
+mapping.</li>
+</ul>
+</div>
+<div id="shooting-incident-data-for-2023" class="section level2">
+<h2>Shooting incident data for 2023</h2>
+<ul>
+<li>This dataset list of every shooting incident that occurred in NYC
+during the current calendar year. As a supplement to the primary
+dataset, this dataset added 2023 shooting incidents up to September.
+Each record represents a shooting incident in NYC and includes
+information about the event, the location and time of occurrence. In
+addition, information related to suspect and victim demographics is also
+included.</li>
+</ul>
+<pre class="r"><code># Read shooting incident data for 2023
+NYPD_Shooting_Incident_2023 = 
+  read_csv(&quot;data/NYPD_Shooting_Incident_Data__Year_To_Date__20231129.csv&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  select(-new_georeferenced_column, -statistical_murder_flag)</code></pre>
+<ul>
+<li>There are a total of 21 variables. Out of which, the variables and
+description we considered are same as the given list above.</li>
+</ul>
+</div>
+</div>
+<div id="data-processing" class="section level1">
+<h1>Data processing</h1>
+<p>We bind these two dataste by row, making a longer result for the
+whole shooting incidents happened from 2006 to 2023. Separate the year,
+month and day in <code>occur_date</code> into three variables. Also,
+Separate the hours, minutes, and seconds in “occup_time” into three
+variables for subsequent statistical analysis. Remove variables that
+will not be used in subsequent statistical analysis of the data:
+<code>minute</code>, <code>second</code>,
+<code>loc_of_occur_desc</code>, <code>loc_classfctn_desc</code>,
+<code>location_desc</code>.</p>
+<pre class="r"><code>NYPD_Shooting_Incident_cleaned = 
+  bind_rows(NYPD_Shooting_Incident_2006_2022, NYPD_Shooting_Incident_2023) |&gt;
+  separate(occur_date, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;), sep = &quot;/&quot;) |&gt;
+  separate(occur_time, into = c(&quot;hour&quot;, &quot;minute&quot;, &quot;second&quot;), sep = &quot;:&quot;) |&gt;
+  select(-minute, -second, -loc_of_occur_desc, -loc_classfctn_desc, -location_desc)</code></pre>
+</div>
+<div id="mapping" class="section level1">
+<h1>Mapping</h1>
+<div id="mapping-new-york-city" class="section level2">
+<h2>Mapping New York City</h2>
+<ul>
+<li>To provide a more detailed and focused view of New York City,
+specific geographic limits were defined. The longitude and latitude
+boundaries were set as follows: Longitude: -74.3 to -73.7; Latitude:
+40.5 to 40.9. These limits were chosen to encompass the central area of
+New York City, ensuring that the map primarily highlights the city
+itself.</li>
+</ul>
+<pre class="r"><code># map
+new_york_map &lt;- map_data(&quot;state&quot;, region = &quot;new york&quot;)
+
+# Define limits to focus on New York City
+lon_min &lt;- -74.3
+lon_max &lt;- -73.7
+lat_min &lt;- 40.5
+lat_max &lt;- 40.9
+
+ggplot() +
+  geom_polygon(data = new_york_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of New York City&quot;)</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>The maps generated are called “New York City Maps” and effectively
+show the outlines of geographic areas with light gray fills and white
+borders.</li>
+</ul>
+</div>
+<div id="mapping-new-york-city-with-nypd-shooting-incident-data"
+class="section level2">
+<h2>Mapping New York City with NYPD Shooting Incident Data</h2>
+<pre class="r"><code>ggplot() +
+  geom_polygon(data = new_york_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  geom_point(data = NYPD_Shooting_Incident_cleaned, aes(x = longitude, y = latitude), color = &quot;yellow&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of New York City with Data Points&quot;)</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ul>
+<li>The map that resulted, entitled “Map of New York City with Data
+Points,” effective combines the geographic layout of the city with the
+specific locations of the shootings. The light gray background provides
+context for the map, while the yellow data points highlight the spatial
+distribution of shootings in New York City.</li>
+</ul>
+</div>
+<div id="mapping-manhattan" class="section level2">
+<h2>Mapping Manhattan</h2>
+<ul>
+<li>In order to provide a detailed and centralized view of Manhattan,
+the map defines specific geographic constraints. The longitude and
+latitude boundaries are set as follows: Longitude: -74.0479 to
+-73.79067; Latitude: 40.6829 to 40.8820. These boundaries cover all of
+Manhattan, ensuring that the map primarily highlights the borough
+itself.</li>
+</ul>
+<pre class="r"><code># map for Manhattan
+manhattan_map &lt;- map_data(&quot;state&quot;, region = &quot;new york&quot;)
+
+lon_min &lt;- -74.0479
+lon_max &lt;- -73.79067
+lat_min &lt;- 40.6829
+lat_max &lt;- 40.8820
+
+ggplot() +
+  geom_polygon(data = manhattan_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of manhattan&quot;)</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<ul>
+<li>Generates the “Manhattan Map” that effectively shows the outline of
+the geographic area with a light gray fill and white border.</li>
+</ul>
+</div>
+<div id="mapping-manhattan-with-nypd-shooting-incident-data"
+class="section level2">
+<h2>Mapping Manhattan with NYPD Shooting Incident Data</h2>
+<pre class="r"><code>manhattan = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  filter(boro == &quot;MANHATTAN&quot;)
+
+ggplot() +
+  geom_polygon(data = manhattan_map, aes(x = long, y = lat, group = group), fill = &quot;lightgray&quot;, color = &quot;white&quot;) +
+  geom_point(data = manhattan, aes(x = longitude, y = latitude), color = &quot;yellow&quot;) +
+  coord_fixed(ratio = 1, xlim = c(lon_min, lon_max), ylim = c(lat_min, lat_max)) +
+  labs(title = &quot;Map of Manhattan with Incident Points&quot;)</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li>“Manhattan Map with Event Points” effectively combines the
+geographic layout of Manhattan with the specific locations of shooting
+incidents. A light gray background provides context for the map, while
+yellow data points highlight the spatial distribution of shootings
+within the borough.</li>
+</ul>
+</div>
+</div>
+<div id="exploratory-analysis" class="section level1">
+<h1>Exploratory Analysis</h1>
+<div id="regarding-time-and-victimization" class="section level2">
+<h2>Regarding time and victimization:</h2>
+<ul>
+<li>Presents an analysis of the distribution of NYPD shooting incidents
+across different time periods. The focus is on understanding when these
+incidents are more likely to occur during the day.</li>
+</ul>
+<pre class="r"><code>#incidents rate against the time
+incidents_time = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  mutate(hour = as.factor(hour)) |&gt;
+  group_by(hour) |&gt;
+  ggplot(aes(x = hour)) +
+  geom_bar() +
+  labs(x = &quot;Time(hour)&quot;, y = &quot;Incidents Numbers&quot;, title = &quot;Incidents Distribution of Time Periods&quot;)
+incidents_time</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>In this plot, each bar represents a specific hour, and the height of
+the bar corresponds to the number of shooting incidents during that
+hour. The x-axis represents the time (hour), and the y-axis represents
+the count of incidents. From this plot, we can find that the majority of
+shooting incidents occur during the night, with the highest
+concentration observed between 21:00 and 23:00. Incidents are notably
+fewer during the daytime, reaching the lowest point from 7:00 to 9:00
+PM. Incident numbers gradually increase throughout the day, reaching a
+peak during the late-night hours.</li>
+</ul>
+</div>
+<div id="regarding-gender-and-victimization" class="section level2">
+<h2>Regarding gender and victimization:</h2>
+<ul>
+<li>This plot delves into the gender distribution of shooting victims,
+seeking to understand the gender disparities among individuals impacted
+by shooting incidents.</li>
+</ul>
+<pre class="r"><code>#victim gender pie chart
+victim_gender = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(vic_sex) |&gt;
+  distinct(incident_key) |&gt;
+  summarise(count = n()) |&gt;
+  mutate(cumulative = cumsum(count),
+         label_position = cumulative - (0.5 * count)) |&gt;
+  ggplot(aes(x = &quot;&quot;, y = count, fill = vic_sex)) +
+  geom_bar(width = 1, stat = &quot;identity&quot;) +
+  coord_polar(&quot;y&quot;, start = 0) +
+  theme_void() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  labs(title = &quot;Victim Gender Distribution&quot;)
+victim_gender </code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ul>
+<li>The plot reveals a substantial gender difference in victimization,
+with a significantly higher number of male victims compared to female
+victims. It effectively conveys the gender distribution, showcasing the
+magnitude of victimization for each gender category.</li>
+</ul>
+</div>
+<div id="regarding-age-and-victimization" class="section level2">
+<h2>Regarding age and victimization:</h2>
+<ul>
+<li>This plot investigates the age distribution of shooting victims,
+aiming to identify patterns and disparities across different age
+groups.</li>
+</ul>
+<pre class="r"><code>#victim age bar chart
+victim_age = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(vic_age_group) |&gt;
+  distinct(incident_key) |&gt;
+  summarise(count = n()) |&gt;
+  mutate(cumulative = cumsum(count),
+         label_position = cumulative - (0.5 * count)) |&gt;
+  ggplot(aes(x = &quot;&quot;, y = count, fill = vic_age_group)) +
+  geom_bar(width = 1, stat = &quot;identity&quot;) +
+  coord_polar(&quot;y&quot;, start = 0) +
+  theme_void() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+    labs(title = &quot;Age Distribution of Shooting Victims&quot;)</code></pre>
+<pre class="r"><code>victim_age</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ul>
+<li>The plot highlights a significant disparity in victimization among
+various age groups.Victimization is notably concentrated among young
+people, with the age group between 25 and 44 experiencing the highest
+incidence of shooting incidents. There is an outlier at age 1022
+observed in the dataset, and it may represent an anomaly or data entry
+error.</li>
+</ul>
+</div>
+<div id="regarding-region-and-victimization" class="section level2">
+<h2>Regarding region and victimization:</h2>
+<ul>
+<li>This plot examines the trends in shooting incidents over the years,
+with a focus on different boroughs in New York City. The analysis
+employs a line chart to visually represent the number of incidents in
+each borough across multiple years.</li>
+</ul>
+<pre class="r"><code>#incidents vs. year, seperated by borough
+incidents_year = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(year, boro) |&gt;
+  summarise(count = n(), .groups = &quot;drop&quot;) |&gt;
+  ggplot(aes(x = year, y = count, group = boro, color = boro)) +
+  geom_line() +
+  facet_wrap(~boro) +
+  labs(
+    title = &quot;Incidents vs Year&quot;,
+    x = &quot;Year&quot;,
+    y = &quot;Incidents&quot;
+  )</code></pre>
+<pre class="r"><code>incidents_year</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<ul>
+<li>The number of incidents in Bronx and Brooklyn has been maintained at
+a high level every year. The overall situation of Manhattan and Queens
+remains relatively low and stable. But all four borough showed
+significant declines in 2018-2019, and bounced back in the following
+year. Compared with other boroughs, Staten Island have the fewer amount
+of the incidents. The density of data points in Staten Island is
+significantly lower than in other regions.</li>
+</ul>
+</div>
+</div>
+<div id="statistical-analysis" class="section level1">
+<h1>Statistical Analysis</h1>
+<div id="seasonal-comparison-of-shooting-incidents"
+class="section level2">
+<h2>Seasonal Comparison of Shooting Incidents</h2>
+<ul>
+<li>This statistical analysis aims to investigate whether there are
+significant differences in the mean number of shooting incidents between
+seasons in New York City.</li>
+<li>Visualized using bar graphs, the x-axis represents the season
+(winter, spring, summer, fall), and y-axis represents the number of
+different shootings in each season. The bar plot provides a visual
+representation of the distribution of shooting incidents across
+different seasons.</li>
+</ul>
+<pre class="r"><code>season = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(month) |&gt;
+  distinct(incident_key) |&gt;
+  summarise(count = n()) |&gt;
+  mutate(season = case_match(
+    month,
+    &quot;01&quot; ~ &quot;winter&quot;,
+    &quot;02&quot; ~ &quot;winter&quot;,
+    &quot;03&quot; ~ &quot;spring&quot;,
+    &quot;04&quot; ~ &quot;spring&quot;,
+    &quot;05&quot; ~ &quot;spring&quot;,
+    &quot;06&quot; ~ &quot;summer&quot;,
+    &quot;07&quot; ~ &quot;summer&quot;,
+    &quot;08&quot; ~ &quot;summer&quot;,
+    &quot;09&quot; ~ &quot;fall&quot;,
+    &quot;10&quot; ~ &quot;fall&quot;,
+    &quot;11&quot; ~ &quot;fall&quot;,
+    &quot;12&quot; ~ &quot;winter&quot;,
+  )) 
+
+season |&gt;
+  ggplot(aes(x = season, y = count)) +
+  geom_col()</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<ul>
+<li>The largest gaps were found in the summer and winter seasons, which
+were selected for subsequent analysis.</li>
+</ul>
+<pre class="r"><code>summer_winter = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  group_by(month, year) |&gt;
+  distinct(incident_key) |&gt;
+  filter(!year == 2023) |&gt;
+  summarise(count = n()) |&gt;
+  mutate(season = case_match(
+    month,
+    &quot;01&quot; ~ &quot;winter&quot;,
+    &quot;02&quot; ~ &quot;winter&quot;,
+    &quot;03&quot; ~ &quot;spring&quot;,
+    &quot;04&quot; ~ &quot;spring&quot;,
+    &quot;05&quot; ~ &quot;spring&quot;,
+    &quot;06&quot; ~ &quot;summer&quot;,
+    &quot;07&quot; ~ &quot;summer&quot;,
+    &quot;08&quot; ~ &quot;summer&quot;,
+    &quot;09&quot; ~ &quot;fall&quot;,
+    &quot;10&quot; ~ &quot;fall&quot;,
+    &quot;11&quot; ~ &quot;fall&quot;,
+    &quot;12&quot; ~ &quot;winter&quot;,
+  )) |&gt;
+  select(-year) |&gt;
+  ungroup() |&gt;
+  filter(season %in% c(&quot;winter&quot;, &quot;summer&quot;))
+
+summer = 
+  summer_winter |&gt;
+  filter(season == &quot;summer&quot;) |&gt;
+  select(count)
+winter = 
+  summer_winter |&gt;
+  filter(season == &quot;winter&quot;) |&gt;
+  select(count)
+summer_winter_after = 
+  bind_cols(summer, winter) |&gt;
+  rename(summer = count...1,
+         winter = count...2)</code></pre>
+<div id="summer-winter-incident-comparison." class="section level3">
+<h3>Summer-Winter Incident Comparison.</h3>
+<p>Null Hypothesis (H0): There is no difference in mean incident numbers
+between summer and winter.</p>
+<p>Alternative Hypothesis (H1): The mean incident numbers between summer
+and winter are different. A two-sample z-test was conducted to compare
+the average of summer and winter shooting incidents.</p>
+<pre class="r"><code>z_test = z.test(x = summer_winter_after$summer, y = summer_winter_after$winter, sigma.x = sd(summer_winter_after$summer), sigma.y = sd(summer_winter_after$winter))
+z_test</code></pre>
+<pre><code>## 
+##  Two-sample z-Test
+## 
+## data:  summer_winter_after$summer and summer_winter_after$winter
+## z = 9.4566, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  48.79243 74.30561
+## sample estimates:
+## mean of x mean of y 
+## 140.58824  79.03922</code></pre>
+<p>z-test yielded the following results:</p>
+<ul>
+<li><p>Z value: 9.4566</p></li>
+<li><p>P-value: &lt; 2.2e-16 (very small, indicating strong evidence
+against the original hypothesis)</p></li>
+<li><p>Confidence interval: (48.79, 74.31)</p></li>
+</ul>
+<p>The results of the z-test for both samples indicate that there is a
+statistically significant difference between the average number of
+shootings in the summer and winter. p-value is extremely small,
+providing strong evidence against the original hypothesis. Means that
+there is a large difference between the average number of shootings in
+the summer and winter months.</p>
+</div>
+<div
+id="proportion-of-male-shooting-victims-in-brooklyn-vs.-staten-island."
+class="section level3">
+<h3>Proportion of Male Shooting Victims in Brooklyn vs. Staten
+Island.</h3>
+<ul>
+<li>This statistical analysis aims to compare the proportion of male
+shooting victims between the boroughs of Manhattan and Queens in New
+York City. The goal is to investigate whether there is a significant
+difference in the proportion of male victims between these two
+boroughs.</li>
+</ul>
+<pre class="r"><code>prop_df = 
+  NYPD_Shooting_Incident_cleaned |&gt;
+  select(boro, vic_sex) |&gt;
+  group_by(boro, vic_sex) |&gt;
+  summarize(sum = n())</code></pre>
+<p>Null Hypothesis (H0): The proportion of male shooting victims in
+Brooklyn is equal to the proportion in Staten Island.</p>
+<p>Alternative Hypothesis (H1): The proportions of male shooting victims
+in Brooklyn and Staten Island are different. Use a two-sample test for
+equality of proportions with continuity correction to compare the
+proportions of male shooting victims in Brooklyn and Staten Island.</p>
+<pre class="r"><code>num_brook = 
+  prop_df |&gt;
+  filter(boro == &quot;BROOKLYN&quot;)
+
+num_SI = 
+  prop_df |&gt;
+  filter(boro == &quot;STATEN ISLAND&quot;)
+
+num_brook = sum(pull(num_brook, sum))
+
+num_SI = sum(pull(num_SI, sum))
+
+num_brook_male =
+  prop_df |&gt;
+  filter(boro == &quot;BROOKLYN&quot;) |&gt;
+  filter(vic_sex == &quot;M&quot;) |&gt;
+  pull(sum)
+
+num_SI_male =
+  prop_df |&gt;
+  filter(boro == &quot;STATEN ISLAND&quot;) |&gt;
+  filter(vic_sex == &quot;M&quot;) |&gt;
+  pull(sum)
+
+prop.test(c(num_brook_male, num_SI_male), n = c(num_brook, num_SI))</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity correction
+## 
+## data:  c(num_brook_male, num_SI_male) out of c(num_brook, num_SI)
+## X-squared = 3.4568, df = 1, p-value = 0.06299
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.002741196  0.044648482
+## sample estimates:
+##    prop 1    prop 2 
+## 0.9024998 0.8815461</code></pre>
+<p>The test results indicate the following:</p>
+<ul>
+<li><p>X-squared Value: 3.4568</p></li>
+<li><p>Degrees of Freedom (df): 1</p></li>
+<li><p>P-Value: 0.06299</p></li>
+<li><p>Confidence Interval: (-0.0027, 0.0446)</p></li>
+</ul>
+<p>While the p-value is greater than the conventional significance level
+of 0.05, suggesting that we do not have strong evidence against the null
+hypothesis. Indicate that the proportions of male victims in Brooklyn
+and Staten Island are likely to be similar.</p>
+</div>
+</div>
+</div>
+<div id="additional-analysis---time-series-model"
+class="section level1">
+<h1>Additional analysis - Time Series Model</h1>
+<div id="data-processing-1" class="section level2">
+<h2>Data Processing</h2>
+<p>First, we import the cleaned data into the environment, and grouped
+the data by year and month. After that, we count the case number of each
+month and would like to find out that is there any serial
+autocorrelation. To predict the future data, we still need to conduct
+some test about the original data.</p>
+<pre class="r"><code>every_month = 
+  NYPD_Shooting_Incident_cleaned |&gt; 
+  group_by(year,month) |&gt; 
+  summarize(cases_number = n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups`
+## argument.</code></pre>
+<p>After that, we draw the plot of the original data. It is clear that
+we can’t recognize any upward or downward trend in the time series from
+the graphs. In order to make the model focused more on recent data
+points, we decided to reduce the training data. Hence，the model would
+give more weight on the recent data rather than other distant data.</p>
+<pre class="r"><code>cases_ts =
+  every_month |&gt; 
+  pull(cases_number)|&gt;
+  ts(start = c(2006,1), frequency = 12)
+
+plot(cases_ts,
+     main = &quot;Shooting cases per month&quot;,
+     xlab = &quot;Year&quot;,
+     ylab = &quot;Frequency&quot;)</code></pre>
+<p><img src="project_report_files/figure-html/split_tseries-1.png" width="672" /></p>
+<pre class="r"><code>## test model
+test_series = 
+  every_month |&gt; 
+  filter(year&gt;=2017) |&gt; 
+  pull(cases_number)
+
+test_series = ts(test_series,start = c(2017,1), frequency = 12)</code></pre>
+</div>
+<div id="conducting-the-test" class="section level2">
+<h2>Conducting the test</h2>
+<p><span class="math inline">\(H_{0}\)</span>: The data are
+independently distributed (i.e. the correlations in the population from
+which the sample is taken are 0, so that any observed correlations in
+the data result from randomness of the sampling process).</p>
+<p><span class="math inline">\(H_{1}\)</span>: The data are not
+independently distributed; they exhibit serial correlation.</p>
+<pre class="r"><code>Box.test(test_series,type = &quot;Ljung&quot;,lag = 6)</code></pre>
+<pre><code>## 
+##  Box-Ljung test
+## 
+## data:  test_series
+## X-squared = 104.33, df = 6, p-value &lt; 2.2e-16</code></pre>
+<p>Then, we need to reject the NULL hypothesis and concluded that the
+exhibit serial correlation, in other words, this series is not a white
+noise series and it includes some informations which we need. After
+that, we need to conduct Augmented Dickey-Fuller Test to to examine
+whether the series is a stationary time series or not. If the series is
+not stationary then the series is to be stabilized by difference.</p>
+<p><span class="math inline">\(H_0\)</span>:The time series has a unit
+root, implying that it is non-stationary.</p>
+<p><span class="math inline">\(H_1\)</span>:The time series does not
+have a unit root, implying that it is stationary.</p>
+<pre class="r"><code>aTSA::adf.test(test_series)</code></pre>
+<pre><code>## Augmented Dickey-Fuller Test 
+## alternative: stationary 
+##  
+## Type 1: no drift no trend 
+##      lag    ADF p.value
+## [1,]   0 -1.048   0.302
+## [2,]   1 -1.272   0.221
+## [3,]   2 -1.263   0.225
+## [4,]   3 -0.958   0.334
+## Type 2: with drift no trend 
+##      lag   ADF p.value
+## [1,]   0 -2.71  0.0812
+## [2,]   1 -3.56  0.0100
+## [3,]   2 -3.70  0.0100
+## [4,]   3 -2.90  0.0512
+## Type 3: with drift and trend 
+##      lag   ADF p.value
+## [1,]   0 -2.83  0.2341
+## [2,]   1 -3.79  0.0234
+## [3,]   2 -4.05  0.0118
+## [4,]   3 -3.24  0.0876
+## ---- 
+## Note: in fact, p.value = 0.01 means p.value &lt;= 0.01</code></pre>
+<p>From the above test result, we can clear in the model of no drift and
+no trend, all the p-value is greater than the given alpha (<span
+class="math inline">\(\alpha=0.05\)</span>), as a result, we have strong
+evidence to prove that this series does not have a unit root and
+concluded that it’s a stationary series.</p>
+<pre class="r"><code>acf(test_series, lag.max = 20)</code></pre>
+<p><img src="project_report_files/figure-html/othdr_inform-1.png" width="672" /></p>
+<pre class="r"><code>pacf(test_series)</code></pre>
+<p><img src="project_report_files/figure-html/othdr_inform-2.png" width="672" /></p>
+<pre class="r"><code>decomposed = 
+  decompose(test_series,
+            type = &quot;additive&quot;) 
+
+plot(decomposed)</code></pre>
+<p><img src="project_report_files/figure-html/othdr_inform-3.png" width="672" /></p>
+<p>As the normal time-series prediction procedure requested, we also
+made the plot of autocorrelation function(ACF) and partial
+autocorrelation function(PACF) to help us know more about this series.
+What’s more, we deceided to decomposed the series by additive method
+according to the existing feature to this series. From the decomposed
+graph, we can clearly know that it has a strong seasonality which is
+periodic and generally regular and predictable changes that occur over a
+year. Compared to the period when we were undergoing the global pandemic
+of Covid-19(2020-2022), we can clearly see a downward trend in the
+number of cases.</p>
+<div id="grid-research-via-for-loop" class="section level3">
+<h3>Grid Research via For Loop</h3>
+<p>After that, all of us prefer to use the Holtwinter to forecast the
+series which is a way to model three aspects of the time series: a
+typical value (average), a slope (trend) over time, and a cyclical
+repeating pattern (seasonality).</p>
+<p>As a result, we need to find out the best parameter for this model.
+Then, we wrote a function about building a model with different
+parameters and tried to evaluate the model validity by calculating the
+root of the mean of the squared errors between the predicted and actual
+values.</p>
+<pre class="r"><code>holtwinters_rmse = function(alpha, beta, gamma, df) {
+    fit = HoltWinters(df, alpha = alpha, beta = beta, gamma = gamma)
+    forecast_values = forecast::forecast(fit, h = length(df))
+    
+    actual_values = 
+      as.numeric(df)  
+    
+    forecasted_values = 
+      as.numeric(forecast_values$mean)
+    
+    rmse = sqrt(mean((actual_values - forecasted_values)^2, na.rm = TRUE))
+    return(rmse)
+}</code></pre>
+<div id="special-optimization-about-the-loop" class="section level4">
+<h4>Special Optimization About the Loop</h4>
+<p>To make it easier, we use the <code>expand.grid</code> to list all
+the possible combinations in a data frame to reduce the loop layers. In
+this way, we can siginificantly improve the efficiency of this
+simulation process. We also try to facilitate this idea from the grid
+research to find out the best parameter of alpha, beta and gamma with
+the step size of 0.1.</p>
+<pre class="r"><code>beta_range = gamma_range = seq(0, 1, 0.1)
+alpha_range = seq(.1,1,.1)
+param_combin = expand.grid(alpha = alpha_range,
+                           beta = beta_range,
+                           gamma = gamma_range)
+
+best_params = NULL
+best_rmse = Inf
+
+for (i in 1:nrow(param_combin)) {
+  
+  params = param_combin[i, ]
+  rmse = holtwinters_rmse(params$alpha,
+                          params$beta,
+                          params$gamma,
+                          test_series)
+  
+  if (rmse &lt; best_rmse) {
+    best_rmse = rmse
+    best_params = params
+  }
+  
+}
+
+print(
+  sprintf(&quot;The best parameters of Holtwinters - Alpha: %.2f, Beta: %.2f, Gamma: %.2f&quot;,
+          best_params$alpha, 
+          best_params$beta, 
+          best_params$gamma))</code></pre>
+<pre><code>## [1] &quot;The best parameters of Holtwinters - Alpha: 0.30, Beta: 0.50, Gamma: 0.10&quot;</code></pre>
+<pre class="r"><code>print(
+  sprintf(&quot;Best RMSE: %.4f&quot;,
+          best_rmse))</code></pre>
+<pre><code>## [1] &quot;Best RMSE: 53.9833&quot;</code></pre>
+</div>
+</div>
+</div>
+<div id="using-the-best-holtwinter-model-to-predict"
+class="section level2">
+<h2>Using the Best Holtwinter Model to Predict</h2>
+<p>Using the best parameter, we can predict the number of cases for the
+next 12 months and plot the result.</p>
+<pre class="r"><code>HW_best =  
+  HoltWinters(test_series,
+              alpha = pull(best_params , alpha),
+              beta = pull(best_params , beta),
+              gamma = pull(best_params , gamma))
+
+HW_fitted = as.data.frame(fitted(HW_best))
+
+HW_best_forward = 
+  forecast(HW_best, h = 12) |&gt; 
+  janitor::clean_names()
+
+plot(x= test_series,
+     ylab = &quot;Case Number of each month&quot;,
+     xlim = c(2017,2025),
+     ylim = range(0,HW_best_forward$upper[,2]))+
+  lines(HW_best$fitted[,1],
+        col = &quot;blue&quot;, lty = 2)+
+  lines(HW_best_forward$mean,
+        lty=2, col = &quot;red&quot;)+
+  lines(HW_best_forward$upper[,2],
+        col = &quot;orange&quot;)</code></pre>
+<p><img src="project_report_files/figure-html/best_version_prediction-1.png" width="672" /></p>
+<pre><code>## integer(0)</code></pre>
+<pre class="r"><code>HW_best_forward |&gt; 
+  knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="13%" />
+<col width="22%" />
+<col width="19%" />
+<col width="13%" />
+<col width="16%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Point Forecast</th>
+<th align="right">Lo 80</th>
+<th align="right">Hi 80</th>
+<th align="right">Lo 95</th>
+<th align="right">Hi 95</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Oct 2023</td>
+<td align="right">83.24859</td>
+<td align="right">18.0435856</td>
+<td align="right">148.4536</td>
+<td align="right">-16.47386</td>
+<td align="right">182.9711</td>
+</tr>
+<tr class="even">
+<td align="left">Nov 2023</td>
+<td align="right">65.87944</td>
+<td align="right">-5.6234394</td>
+<td align="right">137.3823</td>
+<td align="right">-43.47477</td>
+<td align="right">175.2336</td>
+</tr>
+<tr class="odd">
+<td align="left">Dec 2023</td>
+<td align="right">80.54964</td>
+<td align="right">-0.9566185</td>
+<td align="right">162.0559</td>
+<td align="right">-44.10343</td>
+<td align="right">205.2027</td>
+</tr>
+<tr class="even">
+<td align="left">Jan 2024</td>
+<td align="right">90.77172</td>
+<td align="right">-4.2800928</td>
+<td align="right">185.8235</td>
+<td align="right">-54.59749</td>
+<td align="right">236.1409</td>
+</tr>
+<tr class="odd">
+<td align="left">Feb 2024</td>
+<td align="right">63.53055</td>
+<td align="right">-48.1776428</td>
+<td align="right">175.2387</td>
+<td align="right">-107.31239</td>
+<td align="right">234.3735</td>
+</tr>
+<tr class="even">
+<td align="left">Mar 2024</td>
+<td align="right">85.06583</td>
+<td align="right">-45.9540612</td>
+<td align="right">216.0857</td>
+<td align="right">-115.31180</td>
+<td align="right">285.4435</td>
+</tr>
+<tr class="odd">
+<td align="left">Apr 2024</td>
+<td align="right">95.32296</td>
+<td align="right">-57.2832285</td>
+<td align="right">247.9292</td>
+<td align="right">-138.06807</td>
+<td align="right">328.7140</td>
+</tr>
+<tr class="even">
+<td align="left">May 2024</td>
+<td align="right">126.34651</td>
+<td align="right">-49.8277273</td>
+<td align="right">302.5207</td>
+<td align="right">-143.08873</td>
+<td align="right">395.7817</td>
+</tr>
+<tr class="odd">
+<td align="left">Jun 2024</td>
+<td align="right">127.88393</td>
+<td align="right">-73.6195979</td>
+<td align="right">329.3874</td>
+<td align="right">-180.28912</td>
+<td align="right">436.0570</td>
+</tr>
+<tr class="even">
+<td align="left">Jul 2024</td>
+<td align="right">141.15946</td>
+<td align="right">-87.2675650</td>
+<td align="right">369.5865</td>
+<td align="right">-208.18953</td>
+<td align="right">490.5084</td>
+</tr>
+<tr class="odd">
+<td align="left">Aug 2024</td>
+<td align="right">118.74091</td>
+<td align="right">-138.0749572</td>
+<td align="right">375.5568</td>
+<td align="right">-274.02507</td>
+<td align="right">511.5069</td>
+</tr>
+<tr class="even">
+<td align="left">Sep 2024</td>
+<td align="right">99.94005</td>
+<td align="right">-186.6283623</td>
+<td align="right">386.5085</td>
+<td align="right">-338.32852</td>
+<td align="right">538.2086</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="comment" class="section level2">
+<h2>Comment</h2>
+<p>As you can see from the above the graph, the original series is in
+the color of black. Then, the blue line is the fitted value by
+Holtwinter modeling. After that, the red line is the predicted value and
+the orange one is the the 95% upper limit of the prediction.</p>
+<p>According to the shape of this prediction, we can clearly know that
+the case number will drop after September 2023 and peaks at the middle
+of next year considering seasonality. In such circumstance, we suggest
+that the police station should minimize the likelihood of shootings in
+the precinct by increasing the number of patrols and the number of
+patrols conducted before August of 2024.</p>
+</div>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>At first, we explored the temporal patterns and victim demographics.
+The analysis of shooting incidents over time reveals a concentration
+during nighttime hours, with the peak occurring between 21:00 and 23:00.
+The examination of gender and age distribution among victims highlights
+the disproportionate impact on young individuals, particularly those
+between the ages of 25 and 44. Understanding these demographics can aid
+in targeted prevention and intervention strategies. To visualize the
+data, we processed the data for geographic distribution and mapping. The
+visual representation of shooting incidents on maps provides a clear
+understanding of the spatial distribution. The focus on both New York
+City and Manhattan allows for targeted interventions in high-risk areas.
+The analysis of shooting incidents across different boroughs reveals
+variations in trends. This information can guide law enforcement
+agencies and policymakers in implementing borough-specific
+strategies.</p>
+</div>
+<div id="limitations" class="section level1">
+<h1>Limitations</h1>
+<p>The dataset we used might be subject to reporting biases or
+underreporting, affecting the accuracy of temporal patterns and
+demographic insights. It is crucial to consider potential discrepancies
+in reporting practices across different regions or time periods. The
+presence of outliers, such as the age group “1022,” needs further
+investigation. Anomaly detection and data cleaning techniques should be
+applied to ensure the reliability of demographic insights.</p>
+<p>Also, the dataset’s geographic coordinates might not capture
+fine-grained details, such as specific neighborhoods or block-level
+information. High-resolution mapping could enhance the precision of
+spatial analyses. While geographic analysis identifies areas with high
+incident rates, it does not establish causation. Additional factors,
+such as socio-economic conditions and community dynamics, should be
+considered for a comprehensive understanding.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
